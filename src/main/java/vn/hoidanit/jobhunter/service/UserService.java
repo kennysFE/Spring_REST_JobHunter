@@ -34,6 +34,18 @@ public class UserService {
         return null;
     }
 
+    public User handleUpdateUser(User reqUser) {
+        User currentUser = this.fetchUserById(reqUser.getId());
+        if (currentUser != null) {
+            currentUser.setEmail(reqUser.getEmail());
+            currentUser.setName(reqUser.getName());
+            currentUser.setPassword(reqUser.getPassword());
+
+            this.userRepository.save(currentUser);
+        }
+        return currentUser;
+    }
+
     public void handleDeleteUser(long id) {
         this.userRepository.deleteById(id);
     }
