@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.Company;
@@ -25,14 +26,17 @@ public class CompanyService {
         return this.companyRepository.save(company);
     }
 
-    // Get all company with pagination
-    public ResultPaginationDTO fetchAllCompanies(Pageable pageable) {
-        Page<Company> pageCompany = this.companyRepository.findAll(pageable);
+    // Get all company with pagination, filter, sort
+    public ResultPaginationDTO fetchAllCompanies(Specification<Company> spec, Pageable pageable) {
+        Page<Company> pageCompany = this.companyRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
         Meta mt = new Meta();
 
-        mt.setPage(pageCompany.getNumber() + 1);
-        mt.setPageSize(pageCompany.getSize());
+        // default spring application check pageNumber = 0 => to display true pageNumber
+        // => set pageNumber add 1
+        mt.setPage(pageable.getPageNumber() + 1);
+
+        mt.setPageSize(pageable.getPageSize());
         mt.setPages(pageCompany.getTotalPages());
         mt.setTotal(pageCompany.getNumberOfElements());
 
