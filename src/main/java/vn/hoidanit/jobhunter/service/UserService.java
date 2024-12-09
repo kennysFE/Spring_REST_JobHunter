@@ -99,6 +99,7 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
+    // Get user by email
     public User handleGetUserByUsername(String username) {
         return this.userRepository.findByEmail(username);
     }
