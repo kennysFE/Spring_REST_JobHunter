@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.turkraft.springfilter.boot.Filter;
 
+import java.util.Optional;
+
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
@@ -47,11 +49,20 @@ public class CompanyController {
 
     }
 
-    @GetMapping("/companies/{companyId}")
-    public ResponseEntity<Company> getCompanyById(@PathVariable("companyId") long companyId) {
+    // @GetMapping("/companies/{companyId}")
+    // public ResponseEntity<Company> getCompanyById(@PathVariable("companyId") long
+    // companyId) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.companyService.fetchCompanyById(companyId));
+    // return
+    // ResponseEntity.status(HttpStatus.OK).body(this.companyService.fetchCompanyById(companyId));
 
+    // }
+
+    @GetMapping("/companies/{id}")
+    @ApiMessage("fetch company by id")
+    public ResponseEntity<Company> fetchCompanyById(@PathVariable("id") long id) {
+        Optional<Company> cOptional = this.companyService.findById(id);
+        return ResponseEntity.ok().body(cOptional.get());
     }
 
     @PutMapping("companies")
