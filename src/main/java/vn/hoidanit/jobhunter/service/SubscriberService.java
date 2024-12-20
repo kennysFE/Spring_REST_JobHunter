@@ -1,5 +1,6 @@
 package vn.hoidanit.jobhunter.service;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,11 @@ public class SubscriberService {
         this.jobRepository = jobRepository;
         this.emailService = emailService;
     }
+
+    // @Scheduled(cron = "*/10 * * * * *")
+    // public void testCron() {
+    // System.out.println(" >>> TEXT CRON");
+    // }
 
     // isExistsByEmail
     public boolean isExistsByEmail(String email) {
