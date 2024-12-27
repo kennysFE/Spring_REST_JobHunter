@@ -139,7 +139,12 @@ public class ResumeController {
         Specification<Resume> jobInSpec = filterSpecificationConverter.convert(filterBuilder.field("job")
                 .in(filterBuilder.input(arrJobIds)).get());
 
-        System.out.println(jobInSpec);
+        for (Long elementArrJobId : arrJobIds) {
+            Specification<Resume> jobSpec = filterSpecificationConverter.convert(filterBuilder.field("job")
+                    .in(filterBuilder.input(elementArrJobId)).get());
+
+            jobInSpec = jobInSpec.or(jobSpec);
+        }
 
         Specification<Resume> finalSpec = jobInSpec.and(spec);
         return ResponseEntity.ok().body(this.resumeService.fetchAllResume(finalSpec, pageable));
